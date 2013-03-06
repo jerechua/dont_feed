@@ -1,0 +1,57 @@
+!!!5
+html(ng-app="dont_feed")
+    head
+        title Don't Feed!
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width")
+
+        link(rel="stylesheet", href="public/css/foundation.css")
+        link(rel="stylesheet", href="public/css/normalize.css")
+
+        script(src="public/lib/jquery-1.9.1.js")
+        script(src="public/js/vendor/custom.modernizr.js")
+
+        script(src="angular.js")
+
+    body
+        nav.top-bar
+            ul.title-area
+                li.name
+                    h1
+                        a(href='/') Don't Feed!
+
+        div.row
+            
+            div.large-6.columns
+                h1 Top Feeders
+                ul.small-block-grid-1
+                    li Feeder 1
+                    li Feeder 2
+                    li Feeder 3
+            div.large-6.columns
+                h1 Top Non Feeders
+                ul.small-block-grid-1
+                    li Non FEeder 1
+                    li non feeder 2
+                    li non feeder3
+
+        div.row
+            form
+                label Summoner Name
+                input(type="text", placeholder="Summoner Name")
+
+        //- Foundation stuff
+        script(src="public/js/foundation/foundation.js")
+        script(src="public/js/foundation/foundation.alerts.js")
+        script(src="public/js/foundation/foundation.clearing.js")
+        script(src="public/js/foundation/foundation.cookie.js")
+        script(src="public/js/foundation/foundation.dropdown.js")
+        script(src="public/js/foundation/foundation.forms.js")
+        script(src="public/js/foundation/foundation.joyride.js")
+        script(src="public/js/foundation/foundation.magellan.js")
+        script(src="public/js/foundation/foundation.orbit.js")
+        script(src="public/js/foundation/foundation.placeholder.js")
+        script(src="public/js/foundation/foundation.reveal.js")
+        script(src="public/js/foundation/foundation.section.js")
+        script(src="public/js/foundation/foundation.tooltips.js")
+        script(src="public/js/foundation/foundation.topbar.js")
