@@ -6,4 +6,4 @@ var championSchema = new Schema({
 
 });
 
-module.exports(mongoose.model('Champions', championSchema));
+module.exports = mongoose.model('Champions', championSchema);

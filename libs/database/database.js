@@ -1,35 +1,65 @@
-var mongoose = require('mongoose');
+var mongoose    = require('mongoose'),
+    request     = require('request');
 
-var MONGO = {
-    dev: {
-        user: "feedernoob",
-        pwd: "this is a great passw0rd to use",
-        uri: "linus.mongohq.com",
-        port: "10055",
-        db_name: "dont_feed",
-    },
-};
+var settings    = require('../settings');
 
-
-//Stream is dev
-var getMongoUri = function() {
-
-    var mongo_stub = "mongodb://",
-        stream = 'dev';
-
-    return mongo_stub + 
-    MONGO[stream]['user'] +
-    ":" + MONGO[stream]['pwd'] + 
-    "@" + MONGO[stream]['uri'] +
-    ":" + MONGO[stream]['port'] +
-    "/" + MONGO[stream]['db_name'];
-
-};
-
-mongoose.connect(getMongoUri());
+mongoose.connect(settings.getMongoUri());
 
 db = mongoose.connection;
 
 db.once('open', function() {
     console.log('Connected to DB');
 });
+
+
+var summonerModel = require("./models/Summoner");
+
+exports.Summoner = {
+
+    getSummoner: function(name, region, callback) {
+        var name = name.toLowerCase();
+        var query = {
+            "region" : region,
+            "alias" : name
+        };
+        summonerModel.findOne(query, callback);
+    },
+
+    addSummonerNoCheck: function(summoner, region, callback) {
+        summoner['alias'] = summoner.name;
+        summoner['region'] = region;
+        new summonerModel(summoner).save(callback);
+    },
+
+    addSummoner: function(summoner, region, callback) {
+        this.getSummoner(summoner.name, region, function(err, summoner) {
+            // Summoner does not exist in our db
+            
+            if (summoner == null) {
+                this.addSummonerNoCheck(summoner, callback);
+            } else {
+                callback(err, summoner);
+            }
+
+        });
+    },
+
+    getOrCreateSummoner: function(name, region, callback) {
+        var self = this;
+        this.getSummoner(name, region, function(err, _summoner) {
+            if (_summoner === null) {
+                request.get(settings.getSummonerUrl(name, region), function(err, _res, body) {
+                    var data = JSON.parse(body);
+                    if (data.success == true) {
+                        self.addSummonerNoCheck(data.data, region, callback);
+                    } else {
+                        callback(body, null);
+                    }
+                });
+            } else {
+                callback(err, _summoner);
+            }
+        });
+    },
+
+};

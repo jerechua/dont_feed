@@ -12,4 +12,4 @@ module.exports.apiUrl = function(name) {
     return settings.getSummonerUrl(name);
 }
 
-module.exports(mongoose.model('Feeder', feederNoobSchema));
+module.exports = mongoose.model('Feeder', feederNoobSchema);
