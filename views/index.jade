@@ -7,11 +7,15 @@ html(ng-app="dont_feed")
 
         link(rel="stylesheet", href="public/css/foundation.css")
         link(rel="stylesheet", href="public/css/normalize.css")
+        link(href="public/lib/font-awesome.css", rel="stylesheet")
 
         script(src="public/lib/jquery-1.9.1.js")
         script(src="public/js/vendor/custom.modernizr.js")
 
-        script(src="angular.js")
+        script(src="public/lib/angular.js")
+        script(src="public/js/script.js")
+        script(src="public/js/TopFeeders.js")
+
 
     body
         nav.top-bar
@@ -20,21 +24,45 @@ html(ng-app="dont_feed")
                     h1
                         a(href='/') Don't Feed!
 
-        div.row
+        div.row(ng-controller="TopFeeders")
             
             div.large-6.columns
                 h1 Top Feeders
                 ul.small-block-grid-1
-                    li Feeder 1
-                    li Feeder 2
-                    li Feeder 3
-            div.large-6.columns
-                h1 Top Non Feeders
-                ul.small-block-grid-1
-                    li Non Feeder 1
-                    li non feeder 2
-                    li non feeder 3
+                    li.radius.panel(ng-repeat="feeder in feeders") 
+                        div.row
+                            div.small-2.columns
+                                h1.feed_points {{feeder.feed_points}}
+                                h1.pro_points {{feeder.pro_points}}
+                            div.small-9.columns
+                                h3.subheader {{feeder.name}}
+                                small Region: {{feeder.region}}
+                                ul.button-group.right.stack
+                                    li
+                                        a.button(ng-click="addFeedPoints(feeder)")
+                                            i.icon-plus
+                                    li
+                                        a.button(ng-click="removeFeedPoints(feeder)")
+                                            i.icon-minus
 
+            div.large-6.columns
+                h1 Top Non-feeders
+                ul.small-block-grid-1
+                    li.radius.panel(ng-repeat="nonfeeder in nonFeeders") 
+                        div.row
+                            div.small-2.columns
+                                h1.feed_points {{nonfeeder.feed_points}}
+                                h1.pro_points {{nonfeeder.pro_points}}
+                            div.small-9.columns
+                                h3.subheader {{nonfeeder.name}}
+                                small Region: {{nonfeeder.region}}
+                                ul.button-group.right.stack
+                                    li
+                                        a.button(ng-click="addFeedPoints(nonfeeder)")
+                                            i.icon-plus
+                                    li
+                                        a.button(ng-click="removeFeedPoints(nonfeeder)")
+                                            i.icon-minus
         div.row
             form
                 label Summoner Name

@@ -1,7 +1,7 @@
 //TODO: Refactor this whole crap
 
 var API_URL = "http://api.elophant.com/v2/";
-var ELOPHANT_API_KEY = "";
+var ELOPHANT_API_KEY = "d6XkzdDzc4hz7cLG4Miw";
 
 
 //TODO: Move this someplace where it makes more sense

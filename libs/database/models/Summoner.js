@@ -50,6 +50,16 @@ var summonerSchema = new Schema({
         required: true
     },
 
+    feed_points: {
+        type: Number,
+        default: 0
+    },
+
+    pro_points: {
+        type: Number,
+        default: 0
+    },
+
     // TODO: handle cases of multiple account ids
     // ie. user changes name
     alias: {

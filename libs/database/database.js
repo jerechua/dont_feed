@@ -62,4 +62,12 @@ exports.Summoner = {
         });
     },
 
+    getFeeders: function(callback) {
+        summonerModel.find({}, callback).sort({feed_points: -1}).limit(5);
+    },
+
+    getNonFeeders: function(callback) {
+        summonerModel.find({}, callback).sort({pro_points: -1}).limit(5);
+    }
+
 };
