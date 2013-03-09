@@ -79,11 +79,11 @@ exports.Summoner = {
     },
 
     getFeeders: function(callback) {
-        summonerModel.find({}, callback).limit(5);
+        summonerModel.find({}, callback).sort({'feed_points':-1}).limit(7);
     },
 
     getNonFeeders: function(callback) {
-        summonerModel.find({}, callback).limit(5);
+        summonerModel.find({}, callback).sort({'pro_points':-1}).limit(7);
     }
 
 };
