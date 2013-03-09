@@ -18,7 +18,7 @@ io.sockets.on('connection', function(socket) {
     var increasePoints = function(data, inc) {
         Summoner.increasePoints(data._id, inc, function(err, nAffected) {
             if (!err && nAffected > 0) {
-                socket.emit('refresh:list');
+                io.sockets.emit('refresh:list');
             }
         });
     };
