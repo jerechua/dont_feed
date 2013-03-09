@@ -11,6 +11,8 @@ html(ng-app="dont_feed")
 
         script(src="public/lib/jquery-1.9.1.js")
         script(src="public/js/vendor/custom.modernizr.js")
+        script(src="public/lib/socket.io.js")
+        script(src="public/lib/underscore.js")
 
         script(src="public/lib/angular.js")
         script(src="public/js/script.js")
@@ -24,50 +26,66 @@ html(ng-app="dont_feed")
                     h1
                         a(href='/') Don't Feed!
 
-        div.row(ng-controller="TopFeeders")
-            
-            div.large-6.columns
-                h1 Top Feeders
-                ul.small-block-grid-1
-                    li.radius.panel(ng-repeat="feeder in feeders") 
-                        div.row
-                            div.small-2.columns
-                                h1.feed_points {{feeder.feed_points}}
-                                h1.pro_points {{feeder.pro_points}}
-                            div.small-9.columns
-                                h3.subheader {{feeder.name}}
-                                small Region: {{feeder.region}}
-                                ul.button-group.right.stack
-                                    li
-                                        a.button(ng-click="addFeedPoints(feeder)")
-                                            i.icon-plus
-                                    li
-                                        a.button(ng-click="removeFeedPoints(feeder)")
-                                            i.icon-minus
+        div(ng-controller="TopFeeders")
+            div.row
+                
+                div.large-6.columns
+                    h1 Top Feeders
+                    ul.small-block-grid-1
+                        li.radius.panel(ng-repeat="feeder in feeders | orderBy:'feed_points - pro_points':true") 
+                            div.row
+                                div.small-2.columns
+                                    h1.feed_points {{feeder.feed_points - feeder.pro_points}}
+                                div.small-9.columns
+                                    h3.subheader {{feeder.name}}
+                                    small Region: {{feeder.region}}
+                                    ul.button-group.right.stack
+                                        li
+                                            a.button(ng-click="addFeedPoints(feeder)")
+                                                i.icon-plus
+                                        li
+                                            a.button(ng-click="removeFeedPoints(feeder)")
+                                                i.icon-minus
 
-            div.large-6.columns
-                h1 Top Non-feeders
-                ul.small-block-grid-1
-                    li.radius.panel(ng-repeat="nonfeeder in nonFeeders") 
-                        div.row
-                            div.small-2.columns
-                                h1.feed_points {{nonfeeder.feed_points}}
-                                h1.pro_points {{nonfeeder.pro_points}}
-                            div.small-9.columns
-                                h3.subheader {{nonfeeder.name}}
-                                small Region: {{nonfeeder.region}}
-                                ul.button-group.right.stack
-                                    li
-                                        a.button(ng-click="addFeedPoints(nonfeeder)")
-                                            i.icon-plus
-                                    li
-                                        a.button(ng-click="removeFeedPoints(nonfeeder)")
-                                            i.icon-minus
-        div.row
-            form
-                label Summoner Name
-                input(type="text", placeholder="Summoner Name")
-                input(type="submit")
+                div.large-6.columns
+                    h1 Top Non-feeders
+                    ul.small-block-grid-1
+                        li.radius.panel(ng-repeat="nonfeeder in nonFeeders | orderBy:'pro_points - feed_points':true") 
+                            div.row
+                                div.small-2.columns
+                                    h1.feed_points {{nonfeeder.pro_points - nonfeeder.feed_points}}
+                                div.small-9.columns
+                                    h3.subheader {{nonfeeder.name}}
+                                    small Region: {{nonfeeder.region}}
+                                    ul.button-group.right.stack
+                                        li
+                                            a.button(ng-click="addFeedPoints(nonfeeder)")
+                                                i.icon-plus
+                                        li
+                                            a.button(ng-click="removeFeedPoints(nonfeeder)")
+                                                i.icon-minus
+
+                form(ng-submit="watchSummoner()")
+                    label Summoner Name
+                    input(type="text", ng-model="summonerName", placeholder="Summoner Name")
+
+                div.small-10.columns.small-centered
+                    ul.small-block-grid-1
+                        li.panel(ng-repeat="watch in watchList") 
+                             div.row
+                                div.small-2.columns
+                                    h1.feed_points {{watch.feed_points - watch.pro_points}}
+                                div.small-10.columns
+                                    h3.subheader {{watch.name}}
+                                    small Region: {{watch.region}}
+                                    ul.button-group.right.stack
+                                        li
+                                            a.button(ng-click="addFeedPoints(watch)")
+                                                i.icon-plus
+                                        li
+                                            a.button(ng-click="removeFeedPoints(watch)")
+                                                i.icon-minus
+
 
         //- Foundation stuff
         script(src="public/js/foundation/foundation.js")

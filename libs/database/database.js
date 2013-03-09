@@ -16,6 +16,22 @@ var summonerModel = require("./models/Summoner");
 
 exports.Summoner = {
 
+    getSummonerByAcctId: function(id, callback) {
+        summonerModel.findOne({acctId: id}, callback);
+    },
+
+    increasePoints: function(id, data, callback) {
+        var update = {$inc: data};
+        var query = {acctId: id};
+        summonerModel.update(query, update, callback);
+    },
+
+    getSummonerBatch: function(summonerIds, callback) {
+        summonerModel.find({acctId: {$in: summonerIds}}, callback);
+    },
+
+
+
     getSummoner: function(name, region, callback) {
         var name = name.toLowerCase();
         var query = {
@@ -63,11 +79,11 @@ exports.Summoner = {
     },
 
     getFeeders: function(callback) {
-        summonerModel.find({}, callback).sort({feed_points: -1}).limit(5);
+        summonerModel.find({}, callback).limit(5);
     },
 
     getNonFeeders: function(callback) {
-        summonerModel.find({}, callback).sort({pro_points: -1}).limit(5);
+        summonerModel.find({}, callback).limit(5);
     }
 
 };

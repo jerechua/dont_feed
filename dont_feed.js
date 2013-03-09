@@ -83,3 +83,10 @@ app.get('/', function(req, res) {
 });
 
 app.listen(9999);
+
+
+/**
+ * Start the socket server
+ */
+
+var socketio = require('./dont_feed_socket');
