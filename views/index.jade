@@ -7,7 +7,8 @@ html(ng-app="dont_feed")
 
         link(rel="stylesheet", href="public/css/foundation.css")
         link(rel="stylesheet", href="public/css/normalize.css")
-        link(href="public/lib/font-awesome.css", rel="stylesheet")
+        link(rel="stylesheet", href="public/lib/font-awesome.css")
+        link(rel="stylesheet", href="public/lib/animate.css")
 
         script(src="public/lib/jquery-1.9.1.js")
         script(src="public/js/vendor/custom.modernizr.js")
@@ -17,6 +18,8 @@ html(ng-app="dont_feed")
         script(src="public/lib/angular.js")
         script(src="public/js/script.js")
         script(src="public/js/TopFeeders.js")
+
+        link(rel="stylesheet", href="public/css/screen.css")
 
 
     body
@@ -34,66 +37,74 @@ html(ng-app="dont_feed")
                     ul.small-block-grid-1
                         li.radius.panel(ng-repeat="feeder in feeders | orderBy:'feed_points - pro_points':true") 
                             div.row
-                                div.small-2.columns
+                                div.small-3.columns
                                     h1.feed_points {{feeder.feed_points - feeder.pro_points}}
-                                div.small-9.columns
+                                div.small-7.columns
                                     h3.subheader {{feeder.name}}
                                     small Region: {{feeder.region}}
-                                    ul.button-group.right.stack
+                                div.small-2.columns
+                                    ul.right.stacked-buttons
                                         li
-                                            a.button(ng-click="addFeedPoints(feeder)")
-                                                i.icon-plus
+                                            a.button(ng-click="addFeedPoints(feeder)") Feeder
                                         li
-                                            a.button(ng-click="removeFeedPoints(feeder)")
-                                                i.icon-minus
+                                            a.button(ng-click="removeFeedPoints(feeder)") Nonfeeder
 
                 div.large-6.columns
                     h1 Top Non-feeders
                     ul.small-block-grid-1
                         li.radius.panel(ng-repeat="nonfeeder in nonFeeders | orderBy:'pro_points - feed_points':true") 
                             div.row
-                                div.small-2.columns
+                                div.small-3.columns
                                     h1.feed_points {{nonfeeder.pro_points - nonfeeder.feed_points}}
-                                div.small-9.columns
+                                div.small-7.columns
                                     h3.subheader {{nonfeeder.name}}
                                     small Region: {{nonfeeder.region}}
-                                    ul.button-group.right.stack
+                                div.small-2.columns
+                                    ul.right.stacked-buttons
                                         li
-                                            a.button(ng-click="addFeedPoints(nonfeeder)")
-                                                i.icon-plus
+                                            a.button(ng-click="addFeedPoints(nonfeeder)") Feeder
                                         li
-                                            a.button(ng-click="removeFeedPoints(nonfeeder)")
-                                                i.icon-minus
+                                            a.button(ng-click="removeFeedPoints(nonfeeder)") Nonfeeder
 
+            div.row  
                 form(ng-submit="watchSummoner()")
-                    label Summoner Name
+                    label 
+                        h5 Search a summoner to add to your watch list:
                     input(type="text", ng-model="summonerName", placeholder="Summoner Name")
-
+                div#alertbox.alert-box.round(class="{{alertOptions.type}}")
+                    | {{alertOptions.message}}
+                    //- a.close(close-alert) &times;
+                h6 Watch List:
                 div.small-10.columns.small-centered
                     ul.small-block-grid-1
                         li.panel(ng-repeat="watch in watchList") 
                              div.row
-                                div.small-2.columns
+                                div.small-3.columns
                                     h1.feed_points {{watch.feed_points - watch.pro_points}}
-                                div.small-10.columns
+                                div.small-7.columns
                                     h3.subheader {{watch.name}}
                                     small Region: {{watch.region}}
-                                    ul.button-group.right.stack
+                                div.small-2.columns
+                                    ul.right.stacked-buttons
                                         li
-                                            a.button(ng-click="addFeedPoints(watch)")
-                                                i.icon-plus
+                                            a.button(ng-click="addFeedPoints(watch)") Feeder
                                         li
-                                            a.button(ng-click="removeFeedPoints(watch)")
-                                                i.icon-minus
+                                            a.button(ng-click="removeFeedPoints(watch)") Nonfeeder
         hr
-        div.row
-            ul.small-block-grid-1
-                small
-                    li Powered by:
+        div.powered-by
+            div.row
+                small Powered by:
+                ul.inline-list.powered-by-ul
                     li
-                        a(href="//elophant.com", target="_blank") Elophant.com
+                        a.elophant(href="//elophant.com")
+                            img(src="/public/img/elophant_logo.png", title="Elophant", target="_blank")
                     li
-                        a(href="//github.com/jerechua/dont_feed", target="_blank") github
+                        a.github(href="//github.com/jerechua/dont_feed", target="_blank") 
+                            span
+                                i.icon-github
+                                | GitHub
+
+
 
         //- Foundation stuff
         script(src="public/js/foundation/foundation.js")
@@ -111,6 +122,7 @@ html(ng-app="dont_feed")
         script(src="public/js/foundation/foundation.tooltips.js")
         script(src="public/js/foundation/foundation.topbar.js")
 
+
         script(type="text/javascript")
 
             var _gaq = _gaq || [];
@@ -122,3 +134,5 @@ html(ng-app="dont_feed")
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
             })();
+
+        

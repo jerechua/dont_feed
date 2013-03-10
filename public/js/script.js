@@ -4,3 +4,24 @@ var dont_feed = angular.module('dont_feed', [], function($routeProvider, $locati
   $locationProvider.html5Mode(true);
 });
 
+
+
+dont_feed.directive('closeAlert', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.click(function(event) {
+                $('#alertbox').addClass('animated fadeOutDown');
+            });
+        }
+    };
+});
+
+dont_feed.directive('animateMe', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            $('#alertbox').addClass('animated fadeInDown');
+        }
+    };
+});

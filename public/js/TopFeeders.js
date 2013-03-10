@@ -10,6 +10,7 @@ function TopFeeders($scope, $http) {
         return ids;
     };
 
+    //TODO: this can probably consolidated into one
     socket.on('new:feeder:list', function(data) {
         $scope.feeders = data;
         $scope.$digest();
@@ -70,13 +71,24 @@ function TopFeeders($scope, $http) {
     }
 
     $scope.watchSummoner = function() {
+        // Need to add region selection
         var url = "/na/summoner/" + $scope.summonerName;
         $http({
             method: 'GET',
             url: url,
         }).
-        success(function(data, status, headers, config) {
-            $scope.watchList.push(data);
+        success(function(data, status, headers, config) { 
+
+            if (data) {
+                $scope.watchList.push(data);
+                $scope.alertOptions = alertSuccess;
+            } else {
+                $scope.alertOptions = alertError;
+            }
+
+            // $('#alertbox').removeClass('animated fadeOutDown fadeInDown');
+            // $('#alertbox').addClass('fadeInDown');
+
 
         }).
         error(function(data, status, headers, config) {
@@ -92,5 +104,19 @@ function TopFeeders($scope, $http) {
     $scope.fetchNonFeeders();
     $scope.fetchFeeders();
     $scope.watchList = [];
+    var alertError = {
+        type: "alert",
+        message: "Could not find summoner"
+    };
+
+    var alertSuccess = {
+        type: "success",
+        message: "Successfully added summoner to watch list"
+    };
+
+    $scope.alertOptions = {
+        type: "secondary",
+        message: "There are no summoners in your watch list yet!"
+    }
 
 }

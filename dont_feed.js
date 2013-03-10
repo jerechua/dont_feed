@@ -35,18 +35,13 @@ app.get('/:region/summoner/:name', function(req, res) {
         region  = req.params.region[0];
 
     Summoner.getOrCreateSummoner(name, region, function(err, summoner) {
-        res.send(summoner);
+        if (!err) {
+            res.send(summoner);
+        } else {
+            res.send(null)
+        }
     });
 
-
-});
-
-app.get('/feeders/:name', function() {
-    var name    = req.params.name;
-
-    Summoner.incFeeder(name, function(err, summoner) {
-
-    });
 
 });
 
@@ -62,10 +57,6 @@ app.get('/feeders', function(req, res) {
 });
 
 
-app.get('./nonfeeders/:name', function(req, res) {
-
-    Summoner.incNonFeeder
-});
 app.get('/nonfeeders', function(req, res) {
 
     Summoner.getNonFeeders(function(err, nonfeeder) {
