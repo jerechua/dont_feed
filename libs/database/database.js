@@ -78,19 +78,50 @@ exports.Summoner = {
         });
     },
 
+    // So very messy.. clean this up later
     getFeeders: function(callback) {
 
-        var query = summonerModel.find();
-        query.sort({'feed_points':-1});
-        query.limit(7);
-        query.exec(callback);
+        summonerModel.aggregate(
+        {
+            $project: {
+                pro_points: 1,
+                feed_points: 1,
+                acctId: 1,
+                name: 1,
+                region: 1,
+                points: { 
+                    $subtract: ['$feed_points', '$pro_points']
+                }
+            },
+        }, 
+        {
+            $sort: {points: -1}
+        },
+        {
+            $limit: 7
+        }, callback);
     },
 
     getNonFeeders: function(callback) {
-        var query = summonerModel.find();
-        query.sort({'pro_points':-1});
-        query.limit(7);
-        query.exec(callback);
+        summonerModel.aggregate(
+        {
+            $project: {
+                pro_points: 1,
+                feed_points: 1,
+                acctId: 1,
+                name: 1,
+                region: 1,
+                points: { 
+                    $subtract: ['$feed_points', '$pro_points']
+                }
+            },
+        }, 
+        {
+            $sort: {points: 1}
+        },
+        {
+            $limit: 7
+        }, callback);
     }
 
 };
