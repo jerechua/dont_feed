@@ -12,6 +12,7 @@ var database    = require('./libs/database'),
     User        = require('./libs/database/models/User');
 
 var Summoner    = database.Summoner;
+var userModel   = User.userModel;
 
 params.extend(app);
 
@@ -84,7 +85,10 @@ app.get('/register', function(req, res) {
 
 // TODO: Implement login
 app.post('/login', function(req, res) {
-    res.send('Login post succeeded');
+    var username = req.body.username;
+    var password = req.body.password;
+
+    
 });
 
 app.post('/register', function(req, res) {
@@ -97,7 +101,7 @@ app.post('/register', function(req, res) {
     var isPwAndEmailSame = (password == reentered_password && email == reentered_email);
 
     if (isPwAndEmailSame) {
-        var user = new User.userModel({
+        var user = new userModel({
             username: username,
             password: password,
             email: email
