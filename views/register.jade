@@ -1,0 +1,23 @@
+!!!5
+html
+    head
+        title Don't Feed!
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width")
+
+        link(rel="stylesheet", href="public/css/foundation.css")
+        link(rel="stylesheet", href="public/css/normalize.css")
+        link(rel="stylesheet", href="public/lib/font-awesome.css")
+        link(rel="stylesheet", href="public/lib/animate.css")
+   
+    body
+        form(action="/register", method="post")
+            div
+            h1 Register
+            input(type="text", name="username", placeholder="Enter username", requried="", id="username")
+            input(type="password", name="password", placeholder="Enter password", required="", id="password")
+            input(type="password", name="reenter_password", placeholder="Re-enter password", required="", id="reenter_password")
+            input(type="text", name="email", placeholder="Enter email", id="email")
+            input(type="text", name="reenter_email", placeholder="Re-enter email", id="reenter_email")
+            input(type="submit", value="Create Account")
+            button(onclick="history.back()") Cancel

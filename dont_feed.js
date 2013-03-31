@@ -3,12 +3,13 @@ var express     = require('express'),
     http        = require('http'),
     request     = require('request'),
     jade        = require('jade');
-
+    mongoose    = require('mongoose');
 
 var app         = express();
 
 var database    = require('./libs/database'),
-    settings    = require('./libs/settings');
+    settings    = require('./libs/settings'),
+    User        = require('./libs/database/models/User');
 
 var Summoner    = database.Summoner;
 
@@ -71,6 +72,43 @@ app.get('/nonfeeders', function(req, res) {
 
 app.get('/', function(req, res) {
     res.render('index.jade');
+});
+
+app.get('/login', function(req, res) {
+    res.render('login.jade');
+});
+
+app.get('/register', function(req, res) {
+    res.render('register.jade');
+});
+
+// TODO: Implement login
+app.post('/login', function(req, res) {
+    res.send('Login post succeeded');
+});
+
+app.post('/register', function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    var reentered_password = req.body.reenter_password;
+    var email = req.body.email;
+    var reentered_email = req.body.reenter_email;
+
+    var isPwAndEmailSame = (password == reentered_password && email == reentered_email);
+
+    if (isPwAndEmailSame) {
+        var user = new User.userModel({
+            username: username,
+            password: password,
+            email: email
+        });
+        user.save(function(err){
+            console.log(user.username + ' has been saved with the password ' + user.password);
+        });
+    } else {
+        res.redirect('/register');
+    }
+
 });
 
 app.listen(9999);

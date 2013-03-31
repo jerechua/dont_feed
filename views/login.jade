@@ -1,0 +1,24 @@
+!!!5
+html
+    head
+        title Don't Feed!
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width")
+
+        link(rel="stylesheet", href="public/css/foundation.css")
+        link(rel="stylesheet", href="public/css/normalize.css")
+        link(rel="stylesheet", href="public/lib/font-awesome.css")
+        link(rel="stylesheet", href="public/lib/animate.css")
+   
+    body
+        form(action="/login", method="post")
+            div
+            h1 Login
+            input(type="text", name="username", placeholder="Username", requried="", id="username")
+            input(type="password", name="password", placeholder="Password", required="", id="password")
+            input(type="submit", value="Login")
+        p 
+        | Don't have an account? 
+        a(href="/register") register 
+        | here.
+
