@@ -28,8 +28,11 @@ html(ng-app="dont_feed")
                 li.name
                     h1
                         a(href='/') Don't Feed!
+        if (!user)
+            a(href="/login") Login
+        if (user)
+            p Logged in as #{user.username}
 
-        a(href="/login") Login
 
         div(ng-controller="TopFeeders")
             div.row

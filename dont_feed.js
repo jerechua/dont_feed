@@ -3,7 +3,9 @@ var express     = require('express'),
     http        = require('http'),
     request     = require('request'),
     jade        = require('jade');
-    mongoose    = require('mongoose');
+    mongoose    = require('mongoose'),
+    passport    = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 
 var app         = express();
 
@@ -25,8 +27,41 @@ app.set('views', __dirname + '/views');
 // Public files
 app.use('/public', express.static(__dirname + '/public'));
 
+app.use(express.cookieParser('keyboard cat'));
+app.use(express.session());
 app.use(express.bodyParser());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    userModel.findById(id, function (err, user) {
+        done(err, user);
+    });
+});
+
+passport.use(new LocalStrategy(function(username, password, done) {
+
+    userModel.findOne({ username: username }, function(err, user){
+        if (err) return done(err);
+        if (!user) return done(null, false, { message: 'Unknown user ' + username });
+        user.comparePassword(password, function(err, isMatch){
+            if (err) return done(err);
+            if (isMatch){
+                console.log('User and password matches');
+                return done(null, user);
+            } else {
+                console.log('Mismatch');
+                return done(null, false, { message: 'Invalid password ' });
+            }
+        });
+    });
+    
+}));
 
 app.param('name');
 //TODO: Wrong usage?
@@ -72,7 +107,7 @@ app.get('/nonfeeders', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-    res.render('index.jade');
+    res.render('index.jade', { user: req.user });
 });
 
 app.get('/login', function(req, res) {
@@ -83,12 +118,15 @@ app.get('/register', function(req, res) {
     res.render('register.jade');
 });
 
-// TODO: Implement login
-app.post('/login', function(req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
-
-    
+app.post('/login', function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+        if (err) return next(err);
+        if (!user) res.redirect('/login');
+        req.logIn(user, function(err) {
+            if (err) return next(err);
+        });
+        res.redirect('/');
+    })(req, res, next);
 });
 
 app.post('/register', function(req, res) {
@@ -107,8 +145,9 @@ app.post('/register', function(req, res) {
             email: email
         });
         user.save(function(err){
-            console.log(user.username + ' has been saved with the password ' + user.password);
+            console.log(user.username + ' has been saved');
         });
+        res.redirect('/login');
     } else {
         res.redirect('/register');
     }
