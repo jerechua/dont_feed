@@ -4,6 +4,10 @@ var dont_feed = angular.module('dont_feed', [], function($routeProvider, $locati
   $locationProvider.html5Mode(true);
 });
 
+dont_feed.config(function($interpolateProvider) {
+  $interpolateProvider.startSymbol('{[{');
+  $interpolateProvider.endSymbol('}]}');
+});
 
 
 dont_feed.directive('closeAlert', function() {

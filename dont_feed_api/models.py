@@ -5,6 +5,9 @@ class BaseModel(models.Model):
     modify_time = models.DateTimeField(auto_now=True)
     create_time = models.DateTimeField(auto_now=True, editable=False)
 
+    class Meta:
+        abstract = True
+
 
 class Summoner(BaseModel):
     """
@@ -31,8 +34,9 @@ class Summoner(BaseModel):
 
 class SummonerAlias(models.Model):
     """
-    All known summoner aliases
+    All known summoner aliases incase summoner changes names
     """
 
     summoner = models.ForeignKey('Summoner', blank=False, null=False)
+    name = models.CharField(max_length=50)
 
