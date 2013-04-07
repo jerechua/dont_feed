@@ -121,6 +121,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'dont_feed_api',
     'dont_feed_web',
+    'dont_feed_socket',
+    'third_party_api',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -159,5 +161,8 @@ LOGGING = {
 
 ###### CUSTOM SETTINGS ######
 
+SOCKETIO_PORT = 5050
+
 # Put your elophant api key here
 ELOPHANT_API_KEY = ""
+

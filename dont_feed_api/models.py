@@ -27,7 +27,7 @@ class Summoner(BaseModel):
     revision_date = models.DateTimeField()
     summoner_level = models.PositiveIntegerField()
     summoner_id = models.PositiveIntegerField()
-    region = models.CharField(choices=SERVER_CHOICES)
+    region = models.CharField(max_length=10, choices=SERVER_CHOICES)
     feed_points = models.PositiveIntegerField(default=0)
     pro_points = models.PositiveIntegerField(default=0)
 
